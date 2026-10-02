@@ -1,7 +1,7 @@
 -- Noctra Hub | core/ui.lua
 -- Shared GUI framework. Lahat ng game modules dito naka-base.
 
-local Theme = require(script.Parent.theme)
+local Theme = _G.NoctraTheme 
 
 local UI = {}
 
