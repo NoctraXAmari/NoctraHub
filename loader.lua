@@ -63,7 +63,6 @@ end
 -- =========================================================
 
 local function boot()
-    -- Load core modules
     local themeSrc = fetch("core/theme.lua")
     local uiSrc = fetch("core/ui.lua")
 
@@ -74,23 +73,18 @@ local function boot()
         error("[Noctra] Failed to compile core modules.")
     end
 
-    -- Shared registry so modules can `require` by name
-    local registry = {}
-    local function fakeRequire(name)
-        local key = name:match("([^/]+)%.lua$") or name
-        if registry[key] then return registry[key] end
-        error("[Noctra] Module not found: " .. name)
-    end
-
     local Theme = themeChunk()
-    registry["theme"] = Theme
+    _G.NoctraTheme = Theme
 
     local UI = uiChunk()
-    registry["ui"] = UI
+    _G.NoctraUI = UI
 
-    -- Key gate
+    local registry = {
+        theme = Theme,
+        ui = UI,
+    }
+
     local function proceed()
-        -- Load router
         local routerSrc = fetch("router.lua")
         local routerChunk = loadstring(routerSrc)
         if not routerChunk then
